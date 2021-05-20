@@ -7,11 +7,11 @@ public class ElevatorShaft {
 
   public String toString(Floor floor) {
     if (cab.getFloor() == floor) {
-      return switch (cab.getState()) {
-        case IDLE -> "| ▯ |";
-        case UP -> "| △ |";
-        case DOWN -> "| ▽ |";
-      };
+      return cab.getDoor().toString() + switch (cab.getState()) {
+        case IDLE -> " ▯ ";
+        case UP -> " △ ";
+        case DOWN -> "  ▽  ";
+      } + cab.getDoor().toString();
     }
     else {
       return "|   |";

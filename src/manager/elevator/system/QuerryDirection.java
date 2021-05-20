@@ -1,4 +1,4 @@
-package manager.elevator.dispatcher;
+package manager.elevator.system;
 
 public enum QuerryDirection {
   UP,

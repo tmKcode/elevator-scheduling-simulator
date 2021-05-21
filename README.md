@@ -19,4 +19,4 @@ The project consists of 5 subpackages:
 * _dispatcher_ - implements floor calls dispatcher
 * _system_ - implements connections between elements of the problem
 
-and _Simulation_ class in main package, which implements I/O connection betweeen the system and user.
+and _Simulation_ class in main package, which implements I/O connection betweeen the system and the user.

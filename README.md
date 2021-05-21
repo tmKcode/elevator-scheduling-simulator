@@ -9,7 +9,7 @@ This application uses language features available from _Java SE 14_.
 To **run** the application use:
   ```shell
   git clone https://github.com/tmKcode/elevator-scheduling-simulator.git
-  cd elevator-manager/
+  cd elevator-scheduling-simulator
   javac --class-path ./src/ ./src/manager/elevator/Simulation.java
   java --class-path ./src/ ./src/manager/elevator/Simulation.java
   ```

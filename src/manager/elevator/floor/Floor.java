@@ -23,11 +23,24 @@ public class Floor {
     this.calledDown = false;
   }
 
+  public boolean isTop() {
+    return ID == system.getNumberOfFloors() - 1;
+  }
+
+  public boolean isBottom() {
+    return ID == 0;
+  }
+
   @Override
   public String toString() {
     StringBuilder result = new StringBuilder();
 
-    result.append("Calls: ");
+    result.append(ID);
+    result.append(":");
+
+    while (result.length() < 7) {
+      result.append(" ");
+    }
 
     if (calledUp && calledDown) {
       result.append('↕');
@@ -48,10 +61,10 @@ public class Floor {
     return result.toString();
   }
 
-  public void call(CallDirection direction) {
+  public void setCalled(CallDirection direction, boolean value) {
     switch (direction) {
-      case UP -> calledUp = true;
-      case DOWN -> calledDown = true;
+      case UP -> calledUp = value;
+      case DOWN -> calledDown = value;
     }
   }
 

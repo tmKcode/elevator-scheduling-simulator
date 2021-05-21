@@ -2,9 +2,7 @@ package manager.elevator.elevator;
 
 import manager.elevator.door.Door;
 import manager.elevator.floor.Floor;
-import manager.elevator.system.DestinationRequest;
-import manager.elevator.system.DestinationState;
-import manager.elevator.system.ElevatorSystem;
+import manager.elevator.system.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +32,10 @@ public class ElevatorCab {
 
   }
 
+  public ElevatorSystem getSystem() {
+    return system;
+  }
+
   public int getID() {
     return ID;
   }
@@ -42,36 +44,46 @@ public class ElevatorCab {
     return state;
   }
 
-  public Floor getFloor() {
-    return floor;
-  }
-
   public Door getDoor() {
     return door;
   }
 
-  public ArrayList<DestinationState> getDestinations() {
-    return destinations;
-  }
-
-  public void setDropoff(int floorID, boolean value) {
-    destinations.get(floorID).setDropoff(value);
-  }
-
-  public void setPickup(int floorID, boolean value) {
-    destinations.get(floorID).setPickup(value);
-  }
-
-  public DestinationState getFloorState() {
-    return destinations.get(floor.getID());
+  public Floor getFloor() {
+    return floor;
   }
 
   public int getFloorID() {
     return floor.getID();
   }
 
-  public ElevatorSystem getSystem() {
-    return system;
+  public ArrayList<DestinationState> getDestinations() {
+    return destinations;
+  }
+
+  public DestinationState getDestination(Floor floor) {
+    return destinations.get(floor.getID());
+  }
+
+  public DestinationState getFloorState() {
+    return destinations.get(floor.getID());
+  }
+
+  public boolean isTwoDirectionCourse() {
+    return twoDirectionCourse;
+  }
+
+  public void removePickup(int floorID) {
+    destinations.get(floorID).setPickup(false);
+    destinations.get(floorID).setPickupDirection(null);
+  }
+
+  public void setPickup(FloorCall call) {
+    destinations.get(call.getFloor().getID()).setPickup(true);
+    destinations.get(call.getFloor().getID()).setPickupDirection(call.getDirection());
+  }
+
+  public void setDropoff(int floorID, boolean value) {
+    destinations.get(floorID).setDropoff(value);
   }
 
   public void openDoor() {
@@ -82,6 +94,46 @@ public class ElevatorCab {
     door.close();
   }
 
+  private boolean isCalledUp(FloorCall call) {
+    return call.getFloor().getID() > floor.getID();
+  }
+
+  private boolean isCalledDown(FloorCall call) {
+    return call.getFloor().getID() < floor.getID();
+  }
+
+  public boolean isGoingUp() {
+    for(int i = 0; i < destinations.size(); i++) {
+      if (destinations.get(i).isPickup() || destinations.get(i).isDropoff()) {
+        return i > floor.getID();
+      }
+    }
+
+    return false;
+  }
+
+  public boolean isGoingDown() {
+    for(int i = 0; i < destinations.size(); i++) {
+      if (destinations.get(i).isPickup() || destinations.get(i).isDropoff()) {
+        return i < floor.getID();
+      }
+    }
+
+    return false;
+  }
+
+  private boolean callIsTwoDirection(FloorCall call) {
+    return (isCalledDown(call) && call.getDirection().isUp()) || (isCalledUp(call) && call.getDirection().isDown());
+  }
+
+  public void acceptCall(FloorCall call) {
+    setPickup(call);
+
+    if(state.isIdle() && callIsTwoDirection(call)) {
+      twoDirectionCourse = true;
+    }
+  }
+
   private void moveUp() {
     floor = system.getFloor(floor.getID() + 1);
   }
@@ -90,7 +142,7 @@ public class ElevatorCab {
     floor = system.getFloor(floor.getID() - 1);
   }
 
-  private boolean hasDestinations(List<DestinationState> destinations) {
+  public boolean hasDestinations(List<DestinationState> destinations) {
     for (DestinationState destination : destinations) {
       if (destination.isDropoff() || destination.isPickup()) {
         return true;
@@ -113,27 +165,35 @@ public class ElevatorCab {
       case IDLE ->
           hasDestinations(destinations);
       case UP ->
-          !reachedTopFloor() && hasDestinations(destinations.subList(getFloorID() + 1, system.getNumberOfFloors() - 1));
+          !reachedTopFloor() && hasDestinations(destinations.subList(getFloorID() + 1, system.getNumberOfFloors()));
       case DOWN ->
-          !reachedBottomFloor() && hasDestinations(destinations.subList(0, getFloorID() - 1));
+          !reachedBottomFloor() && hasDestinations(destinations.subList(0, getFloorID()));
     };
   }
 
   public void makeStep() {
     if (destinations.get(floor.getID()).isPickup()) {
       if (door.isOpen()) {
-        destinations.get(floor.getID()).setPickup(false);
         destinations.get(floor.getID()).setDropoff(false);
 
-        system.acquireRequest(
+        system.takeRequest(
             new DestinationRequest(this, destinations.get(floor.getID()).getPickupDirection()));
 
         twoDirectionCourse = false;
-        destinations.get(floor.getID()).setPickupDirection(null);
+        floor.setCalled(destinations.get(floor.getID()).getPickupDirection(), false);
+        removePickup(floor.getID());
       } else {
+        state = ElevatorState.IDLE;
+
         openDoor();
+
+        if (destinations.get(floor.getID()).isDropoff()) {
+          destinations.get(floor.getID()).setDropoff(false);
+        }
       }
     } else if (destinations.get(floor.getID()).isDropoff()) {
+      state = ElevatorState.IDLE;
+
       openDoor();
 
       destinations.get(floor.getID()).setDropoff(false);
@@ -147,12 +207,16 @@ public class ElevatorCab {
               state = i < floor.getID() ? ElevatorState.DOWN : ElevatorState.UP;
 
               twoDirectionCourse = !destinations.get(i).getPickupDirection().equals(state);
+            } else if (destinations.get(i).isDropoff()) {
+              state = i < floor.getID() ? ElevatorState.DOWN : ElevatorState.UP;
             }
           }
         }
         case UP -> moveUp();
         case DOWN -> moveDown();
       }
+    } else {
+      state = ElevatorState.IDLE;
     }
   }
 }

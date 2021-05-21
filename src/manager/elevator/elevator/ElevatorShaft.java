@@ -15,7 +15,7 @@ public class ElevatorShaft {
           + switch (cab.getState()) {
             case IDLE -> " ▯ ";
             case UP -> " △ ";
-            case DOWN -> "  ▽  ";
+            case DOWN -> " ▽ ";
           }
           + cab.getDoor().toString();
     }

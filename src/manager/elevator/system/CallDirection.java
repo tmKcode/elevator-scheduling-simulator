@@ -7,6 +7,14 @@ public enum CallDirection {
   DOWN;
 
   public boolean equals(ElevatorState state) {
-    return (state == ElevatorState.DOWN && this == DOWN) || (state == ElevatorState.UP && this == UP);
+    return (state.isDown() && this.isDown()) || (state.isUp() && this.isUp());
+  }
+
+  public boolean isUp() {
+    return this == UP;
+  }
+
+  public boolean isDown() {
+    return this == DOWN;
   }
 }

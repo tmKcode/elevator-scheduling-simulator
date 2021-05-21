@@ -6,11 +6,6 @@ import manager.elevator.elevator.ElevatorShaft;
 import manager.elevator.floor.Floor;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Queue;
-import java.util.Scanner;
-
-import static manager.elevator.system.CallDirection.UP;
 
 public class ElevatorSystem {
   private final ArrayList<ElevatorShaft> shafts;
@@ -56,6 +51,10 @@ public class ElevatorSystem {
     return floors.get(floorID);
   }
 
+  public boolean floorIDIsValid(int floorID) {
+    return floorID >= 0 && floorID < getNumberOfFloors();
+  }
+
   public void printState() {
     StringBuilder line = new StringBuilder();
 
@@ -67,9 +66,13 @@ public class ElevatorSystem {
 
     System.out.println(line);
 
-    for (Floor floor : floors) {
-      System.out.println(floor.toString());
+    for (int i = floors.size() - 1; i >=0; i--) {
+      System.out.println(floors.get(i).toString());
     }
+  }
+
+  public void takeRequest(DestinationRequest request) {
+    requests.add(request);
   }
 
   private void executeRequests() {
@@ -81,6 +84,8 @@ public class ElevatorSystem {
   }
 
   public void makeStep() {
+    dispatcher.handleCalls();
+
     for (ElevatorCab cab : cabs) {
       cab.makeStep();
     }
@@ -88,7 +93,12 @@ public class ElevatorSystem {
     executeRequests();
   }
 
-  public void acquireRequest(DestinationRequest request) {
-    requests.add(request);
+  public void takeFloorCall(int floorID, CallDirection direction) {
+    FloorCall call = new FloorCall(direction, floors.get(floorID));
+
+    floors.get(call.getFloor().getID()).setCalled(call.getDirection(), true);
+
+    dispatcher.takeFloorCall(call);
+    dispatcher.handleCalls();
   }
 }

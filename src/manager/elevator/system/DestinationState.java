@@ -6,13 +6,6 @@ public class DestinationState {
   private CallDirection pickupDirection;
   private boolean dropoff;
 
-
-  public DestinationState(boolean pickup, CallDirection direction, boolean dropoff) {
-    this.pickup = pickup;
-    this.pickupDirection = direction;
-    this.dropoff = dropoff;
-  }
-
   public DestinationState() {
     this.pickup = false;
     this.pickupDirection = null;

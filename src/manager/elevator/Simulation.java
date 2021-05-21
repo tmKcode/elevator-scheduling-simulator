@@ -1,10 +1,10 @@
 package manager.elevator;
 
+import manager.elevator.system.CallDirection;
 import manager.elevator.system.ElevatorSystem;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.sql.SQLOutput;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -44,6 +44,57 @@ public class Simulation {
     return scannedInt;
   }
 
+  private static void processCommand(ElevatorSystem system) throws FileNotFoundException {
+    Scanner scanner = new Scanner(System.in);
+    boolean continueInput = true;
+
+    System.out.println("Enter command:");
+
+    do {
+      try {
+          switch (scanner.next()) {
+          case "h" -> Simulation.printFile("./messages/help_default.txt");
+          case "s" -> {
+            system.makeStep();
+
+            system.printState();
+          }
+          case "q" -> System.exit(0);
+          case "c" -> {
+            int floorID = scanner.nextInt();
+
+            if(!system.floorIDIsValid(floorID)) {
+              throw new InputMismatchException();
+            }
+
+            CallDirection direction = CallDirection.valueOf(scanner.next());
+
+            if (floorID == system.getNumberOfFloors() - 1 && direction.isUp()) {
+              System.out.println("You can't go UP from top floor!");
+              throw new InputMismatchException();
+            } else if (floorID == 0 && direction.isDown()) {
+              System.out.println("You can't go DOWN from bottom floor!");
+              throw new InputMismatchException();
+            }
+
+            system.takeFloorCall(floorID, direction);
+
+            system.printState();
+          }
+            default -> throw new InputMismatchException();
+        }
+
+        continueInput = false;
+      } catch (InputMismatchException | IllegalArgumentException ex) {
+        System.out.println("Wrong command! Use \'h\' for help.");
+        System.out.println("Enter command:");
+
+        scanner.nextLine();
+      }
+    } while (continueInput);
+  }
+
+
   public static void main(String[] args) throws FileNotFoundException {
     Simulation.printFile("./messages/welcome.txt");
 
@@ -53,6 +104,12 @@ public class Simulation {
     int elevators =
         Simulation.scanInt("elevators");
 
-    ElevatorSystem system = new ElevatorSystem(floors, elevators);
+    ElevatorSystem elevatorSystem = new ElevatorSystem(floors, elevators);
+
+    elevatorSystem.printState();
+
+    while(true) {
+      processCommand(elevatorSystem);
+    }
   }
 }

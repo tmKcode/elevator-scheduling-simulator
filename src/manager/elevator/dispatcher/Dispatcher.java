@@ -10,7 +10,7 @@ import java.util.Queue;
 
 public class Dispatcher {
   private final ElevatorSystem system;
-  private Queue<FloorCall> unhandledFloorCalls;
+  private final Queue<FloorCall> unhandledFloorCalls;
 
   public Dispatcher(ElevatorSystem system) {
     this.system = system;

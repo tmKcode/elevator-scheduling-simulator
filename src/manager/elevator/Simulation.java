@@ -86,7 +86,7 @@ public class Simulation {
 
         continueInput = false;
       } catch (InputMismatchException | IllegalArgumentException ex) {
-        System.out.println("Wrong command! Use \'h\' for help.");
+        System.out.println("Wrong command! Use 'h' for help.");
         System.out.println("Enter command:");
 
         scanner.nextLine();

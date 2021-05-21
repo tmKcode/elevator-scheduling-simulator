@@ -11,7 +11,7 @@ public class ElevatorCab {
   private final ElevatorSystem system;
   private final int ID;
   private ElevatorState state;
-  private Door door;
+  private final Door door;
   private Floor floor;
   private final ArrayList<DestinationState> destinations;
   private boolean twoDirectionCourse;
@@ -22,7 +22,7 @@ public class ElevatorCab {
     this.floor = floor;
 
     this.state = ElevatorState.IDLE;
-    this.door = door = new Door();
+    this.door = new Door();
     this.twoDirectionCourse = false;
 
     this.destinations = new ArrayList<>();

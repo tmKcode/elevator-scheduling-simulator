@@ -12,7 +12,7 @@ public class ElevatorSystem {
   private final ArrayList<ElevatorCab> cabs;
   private final ArrayList<Floor> floors;
   private final Dispatcher dispatcher;
-  private ArrayList<DestinationRequest> requests;
+  private final ArrayList<DestinationRequest> requests;
 
   public ElevatorSystem(int floors, int elevators) {
     this.floors = new ArrayList<>();

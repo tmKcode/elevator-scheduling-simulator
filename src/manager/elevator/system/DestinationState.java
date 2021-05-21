@@ -1,7 +1,6 @@
 package manager.elevator.system;
 
 public class DestinationState {
-  // If both are false
   private boolean pickup;
   private CallDirection pickupDirection;
   private boolean dropoff;

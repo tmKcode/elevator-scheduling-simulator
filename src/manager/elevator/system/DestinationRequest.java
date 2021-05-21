@@ -7,14 +7,12 @@ import java.util.Scanner;
 
 
 public class DestinationRequest {
-  private ElevatorCab cab;
-  private CallDirection direction;
-//  private boolean cabIsEmpty;
+  private final ElevatorCab cab;
+  private final CallDirection direction;
 
   public DestinationRequest(ElevatorCab cab, CallDirection direction) {
     this.cab = cab;
     this.direction = direction;
-//    this.cabIsEmpty = cabIsEmpty;
   }
 
   private boolean scannedFloorIDIsValid(int scannedFloorID) {

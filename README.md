@@ -13,3 +13,9 @@ To **run** the application use:
   javac --class-path ./src/ ./src/manager/elevator/Simulation.java
   java --class-path ./src/ ./src/manager/elevator/Simulation.java
   ```
+The project consists of 5 subpackages:
+* _door_, _floor_ - for visual purposes
+* _elevator_ - implements movement of elevator cabs and visuals of elevator shafts
+* _dispatcher_ - implements floor calls dispatcher
+* _system_ - implements connections between elements of the problem
+and _Simulation_ class in main package, which implements I/O connection betweeen the system and user.

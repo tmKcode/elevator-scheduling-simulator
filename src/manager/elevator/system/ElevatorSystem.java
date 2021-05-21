@@ -61,7 +61,10 @@ public class ElevatorSystem {
     line.append("Shafts:  ");
 
     for (int i = 0; i < shafts.size(); i++) {
-      line.append("  ").append(i).append("  ");
+      line.append(i);
+      while (line.length() - "Shafts:  ".length() - (i * 5) < 5) {
+        line.append(" ");
+      }
     }
 
     System.out.println(line);

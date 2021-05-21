@@ -109,7 +109,7 @@ public class Simulation {
     elevatorSystem.printState();
 
     Simulation.printFile("messages/help_default.txt");
-    
+
     while(true) {
       processCommand(elevatorSystem);
     }

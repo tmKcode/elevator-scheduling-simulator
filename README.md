@@ -2,7 +2,7 @@
 
 This repository contains Elevator Scheduling Simulator - a simple terminal simulator of elevators.
 
-The algorithm used for scheduling in this system is an optimized version of FCFS scheduling algorithm.
+The algorithm used for scheduling in this system is an optimized version of _FCFS scheduling algorithm_.
 
 This application uses language features available from _Java SE 14_.
 

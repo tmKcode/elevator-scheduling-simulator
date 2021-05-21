@@ -53,7 +53,7 @@ public class Simulation {
     do {
       try {
           switch (scanner.next()) {
-          case "h" -> Simulation.printFile("./messages/help_default.txt");
+          case "h" -> Simulation.printFile("../messages/help_default.txt");
           case "s" -> {
             system.makeStep();
 
@@ -96,7 +96,7 @@ public class Simulation {
 
 
   public static void main(String[] args) throws FileNotFoundException {
-    Simulation.printFile("./messages/welcome.txt");
+    Simulation.printFile("../messages/welcome.txt");
 
     int floors =
         Simulation.scanInt("floors");

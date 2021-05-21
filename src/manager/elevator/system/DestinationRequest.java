@@ -2,7 +2,6 @@ package manager.elevator.system;
 
 import manager.elevator.elevator.ElevatorCab;
 
-import javax.sound.midi.Soundbank;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 

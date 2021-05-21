@@ -3,11 +3,6 @@ package manager.elevator.floor;
 import manager.elevator.elevator.ElevatorShaft;
 import manager.elevator.system.CallDirection;
 import manager.elevator.system.ElevatorSystem;
-import manager.elevator.system.FloorCall;
-
-import java.util.ArrayList;
-
-import static manager.elevator.system.CallDirection.UP;
 
 public class Floor {
   private final int ID;

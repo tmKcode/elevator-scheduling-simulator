@@ -3,6 +3,10 @@ package manager.elevator.door;
 public class Door {
   private boolean open;
 
+  public Door() {
+    this.open = false;
+  }
+
   public boolean isOpen() {
     return open;
   }

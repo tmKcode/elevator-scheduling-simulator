@@ -10,12 +10,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ElevatorCab {
-  private ElevatorSystem system;
+  private final ElevatorSystem system;
+  private final int ID;
   private ElevatorState state;
   private Door door;
   private Floor floor;
-  private ArrayList<DestinationState> destinations = new ArrayList<>();
+  private final ArrayList<DestinationState> destinations;
   private boolean twoDirectionCourse;
+
+  public ElevatorCab(ElevatorSystem system, int ID, Floor floor) {
+    this.system = system;
+    this.ID = ID;
+    this.floor = floor;
+
+    this.state = ElevatorState.IDLE;
+    this.door = door = new Door();
+    this.twoDirectionCourse = false;
+
+    this.destinations = new ArrayList<>();
+    for(int i = 0; i < system.getNumberOfFloors(); i++) {
+      destinations.add(new DestinationState());
+    }
+
+  }
+
+  public int getID() {
+    return ID;
+  }
 
   public ElevatorState getState() {
     return state;
@@ -101,15 +122,21 @@ public class ElevatorCab {
   public void makeStep() {
     if (destinations.get(floor.getID()).isPickup()) {
       if (door.isOpen()) {
+        destinations.get(floor.getID()).setPickup(false);
+        destinations.get(floor.getID()).setDropoff(false);
+
         system.acquireRequest(
             new DestinationRequest(this, destinations.get(floor.getID()).getPickupDirection()));
 
         twoDirectionCourse = false;
-        destinations.get(floor.getID()).setPickup(false);
         destinations.get(floor.getID()).setPickupDirection(null);
       } else {
         openDoor();
       }
+    } else if (destinations.get(floor.getID()).isDropoff()) {
+      openDoor();
+
+      destinations.get(floor.getID()).setDropoff(false);
     } else if (door.isOpen()) {
       closeDoor();
     } else if (shouldMove()) {

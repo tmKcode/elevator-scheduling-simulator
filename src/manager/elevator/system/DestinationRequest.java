@@ -2,6 +2,7 @@ package manager.elevator.system;
 
 import manager.elevator.elevator.ElevatorCab;
 
+import javax.sound.midi.Soundbank;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -28,7 +29,14 @@ public class DestinationRequest {
     Scanner scanner = new Scanner(System.in);
     boolean continueInput = true;
 
-    System.out.println("Enter floor number:");
+    System.out.println("Elevator "
+        + cab.getID()
+        + " picks up passengers at floor "
+        + cab.getFloorID()
+        + " to go "
+        + direction
+        + ".");
+    System.out.println("Enter destination (floor number):");
 
     int scannedFloorID = -1;
 

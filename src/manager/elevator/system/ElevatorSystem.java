@@ -44,6 +44,10 @@ public class ElevatorSystem {
     return shafts;
   }
 
+  public ArrayList<ElevatorCab> getCabs() {
+    return cabs;
+  }
+
   public int getNumberOfFloors() {
     return floors.size();
   }

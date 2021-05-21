@@ -1,4 +1,4 @@
-Available current commands:
+Available commands:
     h : help, print the instructions
     q : quit the Elevator Scheduling Simulator
     s : make one step of simulation, print the state

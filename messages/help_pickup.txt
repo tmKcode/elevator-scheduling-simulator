@@ -1,3 +1,0 @@
-Wrong floor number!
-    Try again.
-    Please enter correct floor number in correct destination:

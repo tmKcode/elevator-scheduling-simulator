@@ -2,4 +2,4 @@ Available current commands:
     h : help, print the instructions
     q : quit the Elevator Scheduling Simulator
     s : make one step of simulation, print the state
-    c <floor> <direction> : call elevator to floor <floor> : int in direction : <direction> : {UP, DOWN}
+    c <floor> <direction> : call elevator to floor (<floor> : int) to go in direction (<direction> : {UP, DOWN})
